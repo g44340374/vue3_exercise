@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue3相应</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      let person = {
+        name: '小金刚',
+        age: 22,
+      };
+      // vue2 相应
+      const p = {};
+      Object.defineProperty(p, 'name', {
+        get() {
+          return person.name;
+        },
+        set(value) {
+          person.name = value;
+        },
+      });
+
+      // vue3 利用proxy反向代理对象， 通过代理对象更改源对象的数据
+      const vue3p = new Proxy(person, {
+        get(a, b) {
+          console.log(`读取了vue3p上的${b}的属性`);
+          return a[b];
+          // 获取当前属性
+        },
+        set(a, b, c) {
+          console.log(`修改了vue3p上的${b}的属性`);
+          return (a[b] = c);
+        },
+        deleteProperty(a, b) {
+          console.log(`修改了vue3p上的${b}的属性`);
+          return delete a[b];
+        },
+      });
+
+      // vue3 通过proxy代理， 拦截对象中任意属性的变化(新增、修改、删除等)
+      //      通过Reflect 对源对象属性进行操作
+
+      const vue3ReflectP = new Proxy(person, {
+        get(target, prop) {
+          console.log(`读取vue3ReflectP下的${prop}属性`);
+          return Reflect.get(target[prop]);
+        },
+        set(target, prop, value) {
+          console.log(`修改了vue3ReflectP下的${prop}属性`);
+          return Reflect.set((target[prop] = value));
+        },
+        deleteProperty(target, prop) {
+          console.log(`删除了vue3ReflectP下的${prop}属性`);
+          return Reflect.deleteProperty(target[prop]);
+        },
+      });
+      // Reflect
+    </script>
+  </body>
+</html>
