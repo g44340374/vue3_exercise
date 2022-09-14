@@ -21,6 +21,16 @@ const routes: Array<RouteRecordRaw> = [
     },
     component: () => import('@/views/first/index.vue'),
   },
+  {
+    path: '/second',
+    name: 'Second',
+    meta: {
+      title: '第二天',
+      keepAlive: true,
+      requireAuth: true,
+    },
+    component: () => import('@/views/second/index.vue'),
+  },
 ];
 
 const router = createRouter({
