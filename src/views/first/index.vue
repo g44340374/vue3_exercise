@@ -32,7 +32,6 @@ onMounted(() => {
  -->
 
 <template>
-  {{ directives }}
   <h2>{{ count }}</h2>
   <button @click="increment">更改 count</button>
   <h3>鼠标位置 x:{{ x }} y: {{ y }}</h3>
