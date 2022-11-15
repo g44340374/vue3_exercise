@@ -1,5 +1,17 @@
-<script setup lang="ts"></script>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
+export default defineComponent({
+  setup() {
+    return {
+      locale: zhCn,
+    };
+  },
+});
+</script>
 
 <template>
-  <router-view />
+  <el-config-provider :locale="locale">
+    <router-view />
+  </el-config-provider>
 </template>
