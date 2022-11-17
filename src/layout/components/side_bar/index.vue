@@ -24,3 +24,10 @@ export default defineComponent({
     <SideBarItem />
   </div>
 </template>
+
+<style lang="scss">
+.sidebar {
+  width: 100%;
+  height: 100%;
+}
+</style>

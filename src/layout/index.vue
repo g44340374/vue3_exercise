@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Sidebar, Navbar, TagsView, AppMain } from './components';
+import { useAppStore } from '@/store';
 import {
   computed,
   defineComponent,
@@ -11,6 +12,13 @@ import {
 } from 'vue';
 
 export default defineComponent({
+  setup() {
+    const userStore = useAppStore();
+    const showTagsViews = computed(() => {
+      return userStore?.$state?.showTagsView;
+    });
+    return { showTagsViews };
+  },
   components: {
     Sidebar,
     Navbar,
@@ -23,7 +31,7 @@ export default defineComponent({
 <template>
   <div class="execution">
     <el-container>
-      <el-aside width="200px">
+      <el-aside :width="showTagsViews ? '64px' : '200px'">
         <!-- 侧边栏 -->
         <Sidebar />
       </el-aside>
@@ -51,10 +59,17 @@ export default defineComponent({
   .el-container {
     width: 100%;
     height: 100%;
+    .el-header {
+      width: 100%;
+      height: 100px;
+      padding: 0;
+      box-sizing: border-box;
+    }
   }
   .el-aside {
     background-color: #fff;
     height: 100%;
+    transition: all 0.2s;
   }
 }
 </style>

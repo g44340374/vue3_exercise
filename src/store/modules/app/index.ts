@@ -11,8 +11,13 @@ export const useAppStore = defineStore('app', {
     footer: false,
     themeColor: 'string',
     menuWidth: 123,
+    showTagsView: false,
     globalSettings: false,
   }),
   getters: {},
-  actions: {},
+  actions: {
+    handelTageViews() {
+      this.showTagsView = !this.showTagsView;
+    },
+  },
 });

@@ -1,18 +1,17 @@
 <script lang="ts">
 import { useRouter, useRoute } from 'vue-router';
 import { defineComponent, computed, reactive, toRefs } from 'vue';
+import { useAppStore } from '@/store';
 
 export default defineComponent({
   setup() {
     const router = useRouter();
+    const userStore = useAppStore();
 
     const routes = computed(() => {
-      return router.options.routes;
+      return router.options.routes[1].children;
     });
     const route = useRoute();
-    const state = reactive({
-      collapseIsShow: false,
-    });
     const activeMenu = computed(() => {
       const { meta, path } = route;
       if (meta?.activeMenu) {
@@ -20,27 +19,35 @@ export default defineComponent({
       }
       return path;
     });
-    return { activeMenu, routes, ...toRefs(state) };
+    const showTagsViews = computed(() => {
+      return userStore?.$state?.showTagsView;
+    });
+    return { activeMenu, routes, showTagsViews };
   },
 });
 </script>
 
 <template>
-  <div>
+  <div class="nav">
     <el-menu
       :default-active="activeMenu"
       class="el-menu-vertical-demo"
       router
-      :collapse="collapseIsShow"
+      :collapse="showTagsViews"
     >
       <div v-for="item in routes" :key="item.name">
         <el-menu-item v-if="!item.children" :index="item.path">
-          <el-icon><icon-menu /></el-icon>
-          <span>{{ item.meta.title }}</span>
+          <el-icon v-if="item.meta.icon">
+            <component :is="item.meta.icon" />
+          </el-icon>
+          <span v-show="!showTagsViews">{{ item.meta.title }}</span>
         </el-menu-item>
         <el-sub-menu v-else>
           <template #title>
-            <span>{{ item.meta.title }} </span>
+            <el-icon v-if="item.meta.icon">
+              <component :is="item.meta.icon" />
+            </el-icon>
+            <span v-show="!showTagsViews">{{ item.meta.title }}</span>
           </template>
           <el-menu-item-group>
             <el-menu-item
@@ -48,7 +55,10 @@ export default defineComponent({
               :key="val.name"
               :index="val.path"
             >
-              {{ val.meta.title }}
+              <el-icon v-if="val.meta.icon">
+                <component :is="val.meta.icon" />
+              </el-icon>
+              <span>{{ val.meta.title }} </span>
             </el-menu-item>
           </el-menu-item-group>
         </el-sub-menu>
@@ -58,7 +68,8 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
-.sidebar {
+.nav {
+  width: 100%;
   height: 100%;
   .el-menu {
     height: 100%;

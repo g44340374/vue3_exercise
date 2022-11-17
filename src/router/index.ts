@@ -15,32 +15,65 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Layout',
-    meta: {
-      title: '首页',
-      keepAlive: true,
-      requireAuth: true,
-    },
     component: () => Layout,
+    redirect: '/dashboard',
     children: [
       {
-        path: '/',
+        path: '/dashboard',
         name: 'dashboard',
         meta: {
-          title: '首页1',
+          title: '首页',
+          icon: 'HomeFilled',
           keepAlive: true,
           requireAuth: true,
+          breadCrumb: [{ path: '/dashboard', title: '首页' }],
         },
         component: () => import('@/views/dashboard/index.vue'),
       },
       {
-        path: '/home',
-        name: 'home',
+        path: '/echarts',
+        name: 'echarts',
+        redirect: '/echarts/first',
         meta: {
-          title: '首页2',
+          title: '数据可视化',
+          icon: 'HomeFilled',
           keepAlive: true,
           requireAuth: true,
+          breadCrumb: [{ path: '/echarts', title: '数据可视化' }],
         },
-        component: () => import('@/views/home/index.vue'),
+        component: () => import('@/views/echarts/index.vue'),
+        children: [
+          {
+            path: '/echarts/first',
+            name: 'echartsObne',
+            meta: {
+              title: '第一页',
+              icon: 'HomeFilled',
+              keepAlive: true,
+              requireAuth: true,
+              breadCrumb: [
+                { path: '/echarts', title: '数据可视化' },
+                { path: '/echarts/first', title: '第一页' },
+              ],
+            },
+            component: () => import('@/views/echarts/first/index.vue'),
+          },
+          {
+            path: '/echarts/second',
+            name: 'echartsObn12312e',
+            meta: {
+              title: '第二页',
+              icon: 'HomeFilled',
+              keepAlive: true,
+              requireAuth: true,
+              breadCrumb: [
+                { path: '/echarts', title: '数据可视化' },
+                { path: '/echarts/second', title: '第二页' },
+              ],
+            },
+            component: () => import('@/views/echarts/second/index.vue'),
+          },
+        ],
       },
     ],
   },
